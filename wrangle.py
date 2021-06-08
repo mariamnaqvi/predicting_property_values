@@ -14,9 +14,11 @@ def get_zillow_data(cached=False):
     # If the cached parameter is false, or the csv file is not on disk, read from the database into a dataframe
     if cached == False or os.path.isfile('zillow_df.csv') == False:
         sql_query = '''
-        SELECT bedroomcnt, bathroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, yearbuilt, taxamount, fips
+        SELECT bathroomcnt, bedroomcnt, calculatedfinishedsquarefeet, fips, latitude, longitude,
+        propertylandusetypeid, regionidcounty, regionidzip, yearbuilt, taxvaluedollarcnt, taxamount, transactiondate
         FROM properties_2017
-        JOIN predictions_2017 USING (parcelid);
+        JOIN predictions_2017 USING (parcelid)
+        where transactiondate between "2017-05-01" and "2017-08-31";
         '''
         zillow_df = pd.read_sql(sql_query, get_db_url('zillow'))
         #also cache the data we read from the db, to a file on disk
@@ -26,3 +28,9 @@ def get_zillow_data(cached=False):
         zillow_df = pd.read_csv('zillow_df.csv', index_col=0)
     # return our dataframe regardless of its origin
     return zillow_df
+
+
+def split_zillow(df):
+    train, test = train_test_split(df, train_size=0.8, random_state=123)
+    train, validate = train_test_split(train, train_size=0.7, random_state=123)
+    return train, validate, test
