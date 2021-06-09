@@ -3,6 +3,8 @@ import numpy as np
 import os
 # use get_db_url function to connect to the codeup db
 from env import get_db_url
+# import to use in the split function
+from sklearn.model_selection import train_test_split
 
 def get_zillow_data(cached=False):
     '''
@@ -31,6 +33,9 @@ def get_zillow_data(cached=False):
 
 
 def split_zillow(df):
+    '''
+    This function takes in a pandas dataframe, splits it into train, test and split dataframes and returns them.
+    '''
     train, test = train_test_split(df, train_size=0.8, random_state=123)
     train, validate = train_test_split(train, train_size=0.7, random_state=123)
     return train, validate, test
