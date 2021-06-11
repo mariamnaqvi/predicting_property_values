@@ -16,11 +16,12 @@ def get_zillow_data(cached=False):
     # If the cached parameter is false, or the csv file is not on disk, read from the database into a dataframe
     if cached == False or os.path.isfile('zillow_df.csv') == False:
         sql_query = '''
-        SELECT bathroomcnt, bedroomcnt, calculatedfinishedsquarefeet, fips, latitude, longitude,
-        propertylandusetypeid, regionidcounty, regionidzip, yearbuilt, taxvaluedollarcnt, taxamount, transactiondate
+        SELECT bathroomcnt, bedroomcnt, calculatedfinishedsquarefeet,
+        propertylandusetypeid, taxvaluedollarcnt
         FROM properties_2017
         JOIN predictions_2017 USING (parcelid)
-        where transactiondate between "2017-05-01" and "2017-08-31";
+        where transactiondate between "2017-05-01" and "2017-08-31"
+        AND propertylandusetypeid in (261, 263, 264, 265, 266, 268, 273, 275, 276, 279);
         '''
         zillow_df = pd.read_sql(sql_query, get_db_url('zillow'))
         #also cache the data we read from the db, to a file on disk
@@ -39,3 +40,33 @@ def split_zillow(df):
     train, test = train_test_split(df, train_size=0.8, random_state=123)
     train, validate = train_test_split(train, train_size=0.7, random_state=123)
     return train, validate, test
+
+
+def wrangle_zillow(df):
+    # check for duplicates 
+    num_dups = df.duplicated().sum()
+    # if we found duplicate rows, we will remove them, log accordingly and proceed
+    if num_dups > 0:
+        print(f'There are {num_dups} duplicate rows in your dataset - these will be dropped.')
+        print ('----------------')
+        # remove the duplicates found
+        df = df.drop_duplicates()
+
+    else:
+        # otherwise, we log that there are no dupes, and proceed with our process
+        print(f'There are no duplicate rows in your dataset.')
+        print('----------------')
+
+    # check how many rows with null values
+    null_rows = df.isnull().any(axis=1).sum()
+    if null_rows > 0:
+        print(f'There are {null_rows} rows with null values in your dataset - these will be dropped.')
+        print ('----------------')
+        # remove the null values found
+        df = df.dropna()
+
+    else:
+        # otherwise, we log that there are no null values, and proceed with our process
+        print(f'There are no rows with null values in your dataset.')
+        print('----------------')
+
