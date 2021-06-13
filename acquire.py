@@ -16,7 +16,7 @@ def get_zillow_data(cached=False):
     # If the cached parameter is false, or the csv file is not on disk, read from the database into a dataframe
     if cached == False or os.path.isfile('telco_df.csv') == False:
         sql_query = '''
-        SELECT parcelid, fips AS county, yearbuilt, bathroomcnt AS num_baths, bedroomcnt AS num_beds, calculatedfinishedsquarefeet AS num_sqft,
+        SELECT parcelid, latitude, longitude, fips AS county, yearbuilt, bathroomcnt AS num_baths, bedroomcnt AS num_beds, calculatedfinishedsquarefeet AS num_sqft,
         propertylandusedesc AS property_desc, taxvaluedollarcnt AS tax_value
         FROM properties_2017
             JOIN predictions_2017 USING (parcelid)
@@ -50,23 +50,24 @@ def get_data_summary(df):
     print('-------------------')
 
     # print some information regarding our dataframe
-    print(df.info())
+    df.info()
     print('')
     print('-------------------')
     
     # print out summary stats for our dataset
     print('Here are the summary statistics of our dataset')
     print(df.describe())
+    print('')
     print('-------------------')
 
     print('Here are the categories and their relative proportions')
     # check different categories and proportions of each category for object type cols
-    ignore_vars = ['parcelid','calculatedfinishedsquarefeet', 'taxvaluedollarcnt']
+    show_vc = ['county','num_baths','num_beds', 'property_desc']
     for col in df.columns:
-        if col not in ignore_vars:
+        if col in show_vc:
+            print(f'value counts of {col}')
             print(df[col].value_counts())
             print('')
             print(f'proportions of {col}')
-            print('')
             print(df[col].value_counts(normalize=True,dropna=False))
             print('-------------------')
