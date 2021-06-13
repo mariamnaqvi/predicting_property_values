@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+from datetime import date
 
 # function to clean original df
 def prep_zillow(df):
@@ -32,31 +33,35 @@ def prep_zillow(df):
         print(f'There are no rows with null values in your dataset.')
         print('----------------')
 
+
+    # encode features
+
+    # encode property_desc to change it from string to numeric to be used in the model
+    df['property_type'] = df.property_desc.map({'Single Family Residential':0, 'Condominium':1, 'Cluster Home':2, 'Manufactured, Modular, Prefabricated Homes':3, 
+    'Mobile Home':4, 'Townhouse':5})
+
+    # encode yearbuilt as age of home
+    df['age_of_home'] = (date.today().year - df.yearbuilt).astype(int)
+
     #----------------------#
-    #     Split Data       #
+    #  One hot encoding    #
     #----------------------#
 
-    # split data into train, validate, test dataframes by calling the split_zillow function
-    train, validate, test = split_zillow(df, seed=123)
+    # encode categorical variable: county to numeric
+    dummy_df=pd.get_dummies(df['county'], dummy_na=False, 
+                            drop_first=False)
 
-    # Now that we have our 3 dataframes, print their shapes and return them    
-    train.info()
+    # rename columns that have been one hot encoded
+    dummy_df = dummy_df.rename(columns={6037.0: 'county_6037', 6059.0: 'county_6059', 6111.0: 'county_6111'})  
 
-    print ('----------------')
+    # join dummy df to original df
+    df = pd.concat([df, dummy_df], axis=1)
 
-    print(f'Shape of train split: {train.shape}')
-
-    print ('----------------')
-
-    print(f'Shape of test split: {validate.shape}')
-
-    print ('----------------')
-
-    print(f'Shape of validate split: {test.shape}')
-
-    print ('----------------')
-    
-    return train, validate, test
+    # drop encoded columns
+    # cols_to_drop = ['property_desc', 'county', 'yearbuilt']
+    # df = df.drop(columns = cols_to_drop)
+    # print(f'The following columns were encoded and dropped to limit redundancy: {cols_to_drop}')
+    return df
 
 def remove_outliers(df, cols, k):
     '''
@@ -78,6 +83,26 @@ def split_zillow(df, seed=123):
     Train is 56% (0.7 * 0.8 = .56) of the original dataset
     Validate is 24% (0.3 * 0.7 = 0.24) of the original dataset
     '''
-    train, test = train_test_split(df, train_size=0.8, random_state=123)
-    train, validate = train_test_split(train, train_size=0.7, random_state=123)
+    train, test = train_test_split(df, train_size=0.8, random_state=seed)
+    train, validate = train_test_split(train, train_size=0.7, random_state=seed)
+
+    # Now that we have our 3 dataframes, print their shapes and return them    
+    train.info()
+
+    print ('----------------')
+
+    print(f'Shape of train split: {train.shape}')
+
+    print ('----------------')
+
+    print(f'Shape of test split: {validate.shape}')
+
+    print ('----------------')
+
+    print(f'Shape of validate split: {test.shape}')
+
+    print ('----------------')
+
     return train, validate, test
+
+    
