@@ -110,10 +110,10 @@ def explore_multivariate(train, target, cat_vars, quant_vars):
     '''
     for cat in cat_vars:
         for quant in quant_vars:
-            sns.lmplot(x=cat, y=quant, data=train, scatter=True, hue=target, col=None, palette='plasma_r')
-            plt.xlabel('')
-            plt.ylabel(quant)
-            plt.title(target + ' for ' + cat + ' vs ' + quant)
+            sns.lmplot(x=quant, y=target, data=train, scatter=True, hue=cat, palette ='colorblind')
+            plt.xlabel(quant)
+            plt.ylabel(target)
+            plt.title(quant + ' vs ' + target + ' by ' + cat)
             plt.show()
 
 def plot_variable_pairs(train, cols, hue=None):
