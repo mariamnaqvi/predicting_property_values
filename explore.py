@@ -11,6 +11,10 @@ import prepare as pr
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 import scipy.stats as stats
+from sklearn.feature_selection import SelectKBest, f_regression
+from sklearn.feature_selection import RFE
+from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
+
 
 def explore_univariate(df, cat_vars, quant_vars):
     '''
@@ -124,3 +128,15 @@ def plot_variable_pairs(train, cols, hue=None):
     plot_kws={'line_kws':{'color':'red'}, 'scatter_kws': {'alpha': 0.7}}
     sns.pairplot(train[cols], hue=hue, kind="reg",plot_kws={'line_kws':{'color':'red'}, 'scatter_kws': {'alpha': 0.1}})
     plt.show()
+
+
+def select_rfe(X, y, k, return_rankings=False, model=LinearRegression()):
+    # Use the passed model, LinearRegression by default
+    rfe = RFE(model, n_features_to_select=k)
+    rfe.fit(X, y)
+    features = X.columns[rfe.support_].tolist()
+    if return_rankings:
+        rankings = pd.Series(dict(zip(X.columns, rfe.ranking_)))
+        return features, rankings
+    else:
+        return features
