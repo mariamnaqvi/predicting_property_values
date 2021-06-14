@@ -7,10 +7,9 @@ I used data from Zillow to find good predictors of tax values and create a Linea
 Project Goals
 
 1. Create scripts to perform the following:
-
-- acquisition of data
-- preparation of data
-- exploration of data
+ - acquisition of data
+ - preparation of data
+ - exploration of data
 
 2. Perform statistical analysis to test hypotheses
 
@@ -26,7 +25,6 @@ Initial Hypotheses
 * H<sub>1</sub>: Mean monthly charges of customers who churned > Mean monthly charges of all customers
 
 Data Dictionary
-<<<<<<< Updated upstream
 Name | Datatype | Definition | Possible Values 
 --- | --- | --- | --- 
 parcelid|non-null  int64|Unique identifier for each property|Numeric value
@@ -47,16 +45,14 @@ county_6037|TYPE|encoded representation of whether or not the property is in the
 county_6059|TYPE|encoded representation of whether or not the property is in the 6059 county code|0 = No, 1 = Yes
 county_6111|TYPE|encoded representation of whether or not the property is in the 6111 county code|0 = No, 1 = Yes
 property_type| int64|indicates the type of this property, using the numbers 0-5| 0 = Single Family Residential, 1 = Condominium, 2= Cluster Home, 3 = Manufactured, Modular, Prefabricated Homes, 4 = Mobile Home, 5 = Townhouse
-age_of_home|int64|represents the current age, in years, of the property|Numeric value
-=======
-age_of_home = 2021 - year built
+age_of_home|int64|represents the current age, in years, of the property|Numeric value, basically 2021 - year built
+
 Features Selection 
-- fullbathcnt and calculated bathnbr each have over 117,000 null values vs bathroomcnt with about 2900 nulls so bathroom count was chosen
--  year built has a lot of nulls but if it has strong correlation to predictor we can keep it
-- bedroomcnt is missing about the same values as bathroomcnt and the least number so those two will be kept
-- treating age, fips, bathroom and bedroom count as discrete categorical variables 
-- renamed columns in sql during acquisition
->>>>>>> Stashed changes
+- fullbathcnt and calculated bathnbr each have over 117,000 null values; on the other hand, bathroomcnt contains approximately 2900 null values. Since this results in fewer data replacements, bathroomcnt was selected to represent the number of bathrooms in a property
+ - A similar arguement can be made for bedroomcnt - since it has the fewest number of null values, it will be used to represent the number of bedrooms
+- Similarly, the yearbuilt column contains a large number of nulls. However, if that category presents a strong correlation to predictor, it may be valuable to retain 
+- We will be treating age, fips, bathroom count and bedroom count as discrete categorical variables 
+- Certain columns were renamed via sql during acquisition; these serve to maintain consistency among variable names
 
 Project Planning
 
@@ -98,9 +94,9 @@ The overall process followed in this project, is as follows:
 
 ### 4. Explore
 * This functionality resides in the "explore.py" file, which provides the following functionality:
-  1. perform univariate analysis, by generating bar plot and box plots of certain variables and their distributions
-  2. perform bivariate analysis
-  3. perform multivariate analysis
+  1. perform univariate analysis, by generating bar plots for each categorical variable, as well as box plots and histograms for quantitative variables
+  2. perform bivariate analysis, by generating bar plots for categorical variables, as well as scatter plots for quantitative variables
+  3. perform multivariate analysis by generating box plots of categorical variables against quantitative variables
 * the above also demonstrates the need for further cleanup
   * Certain properties are listed as having 0 bedrooms *and* 0 bathrooms - these records must be incorrect and will be dropped in the notebook
   * there are a number of null values in the num_sqft column. These are addressed in the notebook by finding the mean square-footage for properties matching the bed/bathroom count of the records missing data, and inserting those averages in-place of the NaN values. The following property types were addressed:
@@ -111,7 +107,12 @@ The overall process followed in this project, is as follows:
 
 
 ### 5. Model
+* Generate a baseline, against which all models will be evaluated
+* Explore the set of variables and deduce which has the highest level of correlation to churn
+	* use these selections to generate multiple models to help predict churn
+* Execute each model, tune, validate, and compare to the baseline
 
 
 ### 6. Deliver
-
+* Output findings to a csv file - in this case, "predictions.csv"
+* Present findings via PowerPoint document
