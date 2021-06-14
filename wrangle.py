@@ -70,3 +70,15 @@ def wrangle_zillow(df):
         print(f'There are no rows with null values in your dataset.')
         print('----------------')
 
+def remove_outliers(df, cols, k):
+    '''
+    checks for outliers in original dataframe and removes all outliers not within IQR 
+    '''
+    for col in cols:
+        q1, q3 = df[col].quantile([.25, .75])
+        iqr = q3 - q1
+        upper_bound = q3 + k * iqr
+        lower_bound = q1 - k * iqr
+        df = df[(df[col] < upper_bound) & (df[col] > lower_bound)]
+       
+    return df

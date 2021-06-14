@@ -26,6 +26,7 @@ Initial Hypotheses
 * H<sub>1</sub>: Mean monthly charges of customers who churned > Mean monthly charges of all customers
 
 Data Dictionary
+<<<<<<< Updated upstream
 Name | Datatype | Definition | Possible Values 
 --- | --- | --- | --- 
 parcelid|non-null  int64|Unique identifier for each property|Numeric value
@@ -47,6 +48,15 @@ county_6059|TYPE|encoded representation of whether or not the property is in the
 county_6111|TYPE|encoded representation of whether or not the property is in the 6111 county code|0 = No, 1 = Yes
 property_type| int64|indicates the type of this property, using the numbers 0-5| 0 = Single Family Residential, 1 = Condominium, 2= Cluster Home, 3 = Manufactured, Modular, Prefabricated Homes, 4 = Mobile Home, 5 = Townhouse
 age_of_home|int64|represents the current age, in years, of the property|Numeric value
+=======
+age_of_home = 2021 - year built
+Features Selection 
+- fullbathcnt and calculated bathnbr each have over 117,000 null values vs bathroomcnt with about 2900 nulls so bathroom count was chosen
+-  year built has a lot of nulls but if it has strong correlation to predictor we can keep it
+- bedroomcnt is missing about the same values as bathroomcnt and the least number so those two will be kept
+- treating age, fips, bathroom and bedroom count as discrete categorical variables 
+- renamed columns in sql during acquisition
+>>>>>>> Stashed changes
 
 Project Planning
 
