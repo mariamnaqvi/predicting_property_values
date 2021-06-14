@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from datetime import date
+from sklearn.impute import SimpleImputer
 
 # function to clean original df
 def prep_zillow(df):
@@ -57,11 +58,10 @@ def prep_zillow(df):
     # join dummy df to original df
     df = pd.concat([df, dummy_df], axis=1)
 
-    # drop encoded columns
-    # cols_to_drop = ['property_desc', 'county', 'yearbuilt']
-    # df = df.drop(columns = cols_to_drop)
-    # print(f'The following columns were encoded and dropped to limit redundancy: {cols_to_drop}')
+   
     return df
+
+
 
 def remove_outliers(df, cols, k):
     '''
