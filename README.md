@@ -52,9 +52,9 @@ tax_value|non-null  float64| assessed tax value for this property|Numeric value
 Additionally, a set of features were added to the data set:
 Name | Datatype | Definition | Possible Values 
 --- | --- | --- | --- 
-county_6037|TYPE|encoded representation of whether or not the property is in the 6037 county code|0 = No, 1 = Yes
-county_6059|TYPE|encoded representation of whether or not the property is in the 6059 county code|0 = No, 1 = Yes
-county_6111|TYPE|encoded representation of whether or not the property is in the 6111 county code|0 = No, 1 = Yes
+county_6037|uint8|encoded representation of whether or not the property is in the 6037 county code|0 = No, 1 = Yes
+county_6059|uint8|encoded representation of whether or not the property is in the 6059 county code|0 = No, 1 = Yes
+county_6111|uint8|encoded representation of whether or not the property is in the 6111 county code|0 = No, 1 = Yes
 property_type| int64|indicates the type of this property, using the numbers 0-5| 0 = Single Family Residential, 1 = Condominium, 2= Cluster Home, 3 = Manufactured, Modular, Prefabricated Homes, 4 = Mobile Home, 5 = Townhouse
 age_of_home|int64|represents the current age, in years, of the property|Numeric value, basically 2021 - year built
 
@@ -70,7 +70,7 @@ The overall process followed in this project, is as follows:
 6. Deliver
 
 ### 1. Plan
-* create a list of tasks to complete in the Trello board
+* Create a list of tasks to complete in the <a href="https://trello.com/b/XeGPl5ac/regression-project">Trello Board</a>
 * Perform preliminary examination of the dataset
 * Collect database details (connection information and credentials)
 
@@ -86,8 +86,7 @@ The overall process followed in this project, is as follows:
 - fullbathcnt and calculated bathnbr each have over 117,000 null values; on the other hand, bathroomcnt contains approximately 2900 null values. Since this results in fewer data replacements, bathroomcnt was selected to represent the number of bathrooms in a property
  - A similar arguement can be made for bedroomcnt - since it has the fewest number of null values, it will be used to represent the number of bedrooms
 - Similarly, the yearbuilt column contains a large number of nulls. However, if that category presents a strong correlation to predictor, it may be valuable to retain 
-- We will be treating age, fips, bathroom count and bedroom count as discrete categorical variables 
-- Certain columns were renamed via sql during acquisition; these serve to maintain consistency among variable names
+- Certain columns were renamed via sql during acquisition; these serve to maintain consistency and increase clarity among variable names
 
 * Once data is collected from the above tables, it is stored in a CSV (Comma Separated Value) file on-disk; subsequent acquire.py calls will make use of this cached data rather than repeatedly accessing the database
 * Finally, the get_data_summary() function will present a number of data-set metadata, including the following:
@@ -122,8 +121,8 @@ The overall process followed in this project, is as follows:
 
 ### 4. Explore
 * This functionality resides in the "explore.py" file, which provides the following functionality:
-  1. perform bivariate analysis, by generating bar plots for categorical variables, as well as scatter plots for quantitative variables
-  2. perform multivariate analysis by generating scatter plots of each continuous variable against the target variable, by each categorical variable  
+  1. Perform bivariate analysis, by generating bar plots for categorical variables, as well as scatter plots for quantitative variables
+  2. Perform multivariate analysis by generating scatter plots of each continuous variable against the target variable, by each categorical variable  
 * Performed T-tests and correlation tests to test my initial hypotheses
 
 ### 5. Model
@@ -132,7 +131,7 @@ The overall process followed in this project, is as follows:
 	* The following were selected:
 		* 'latitude', 'longitude', 'num_beds', 'num_sqft', 'county_6111'
 * Generate a baseline, against which all models will be evaluated
-	* the baseline was calculated to have an RMSE of 620877.48; each of the models was evaluated against this baseline value
+	* The baseline was calculated to have an RMSE of 620877.48; each of the models was evaluated against this baseline value
 * Compare the models against the baseline and deduce which has the lowest RMSE and highest R-squared value
 * Fit the best performing model on test data
 * Create visualizations of the residuals and the actual vs predicted distributions
