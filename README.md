@@ -39,24 +39,26 @@ Perform statistical analysis on a Zillow dataset to drive the creation of an acc
 Name | Datatype | Definition | Possible Values 
 --- | --- | --- | --- 
 parcelid|non-null  int64|Unique identifier for each property|Numeric value
-latitude|non-null  float64|angular distance north/south of the equator, for locating a property|Numeric value
-longitude|non-null  float64|angular distance east/west of the meridian, for locating a property|Numeric value
+latitude|non-null  float64|Angular distance north/south of the equator, for locating a property|Numeric value
+longitude|non-null  float64|Angular distance east/west of the meridian, for locating a property|Numeric value
 county|non-null  float64| 4-digit county code|6037, 6059 or 6111
-yearbuilt|non-null  float64| the year the property was constructed, in four digit form|4-digit Numeric value
-num_baths|non-null  float64| number of baths available in the property|Numeric value
-num_beds|non-null  float64| number of bedrooms available in the property|Numeric value
-num_sqft|non-null  float64| the area/size of the property in feet, squared|Numeric value
-property_desc|non-null  object| indicates the type of this property|Single Family Residential, Condominium, Cluster Home, Manufactured, Modular, Prefabricated Homes, Mobile Home, Townhouse
-tax_value|non-null  float64| assessed tax value for this property|Numeric value
+yearbuilt|non-null  float64| Year the property was constructed, in four digit form|4-digit Numeric value
+num_baths|non-null  float64| Number of bathrooms available in the property|Numeric value
+num_beds|non-null  float64| Number of bedrooms available in the property|Numeric value
+num_sqft|non-null  float64| Area/size of the property in feet, squared|Numeric value
+property_desc|non-null  object| Type of the property|Single Family Residential, Condominium, Cluster Home, Manufactured, Modular, Prefabricated Homes, Mobile Home, Townhouse
+tax_value|non-null  float64| Assessed tax value for this property|Numeric value
+RMSE|non-null  float64|Root Mean Squared Error|Numeric value
+R squared|non-null  float64|Proportion of variance in target explained by model|Numeric value
 
 Additionally, a set of features were added to the data set:
 Name | Datatype | Definition | Possible Values 
 --- | --- | --- | --- 
-county_6037|uint8|encoded representation of whether or not the property is in the 6037 county code|0 = No, 1 = Yes
-county_6059|uint8|encoded representation of whether or not the property is in the 6059 county code|0 = No, 1 = Yes
-county_6111|uint8|encoded representation of whether or not the property is in the 6111 county code|0 = No, 1 = Yes
-property_type| int64|indicates the type of this property, using the numbers 0-5| 0 = Single Family Residential, 1 = Condominium, 2= Cluster Home, 3 = Manufactured, Modular, Prefabricated Homes, 4 = Mobile Home, 5 = Townhouse
-age_of_home|int64|represents the current age, in years, of the property|Numeric value, basically 2021 - year built
+county_6037|uint8|Encoded representation of whether or not the property is in the 6037 county code|0 = No, 1 = Yes
+county_6059|uint8|Encoded representation of whether or not the property is in the 6059 county code|0 = No, 1 = Yes
+county_6111|uint8|Encoded representation of whether or not the property is in the 6111 county code|0 = No, 1 = Yes
+property_type| int64|Type of this property, using the numbers 0-5| 0 = Single Family Residential, 1 = Condominium, 2= Cluster Home, 3 = Manufactured, Modular, Prefabricated Homes, 4 = Mobile Home, 5 = Townhouse
+age_of_home|int64|Current age, in years, of the property|Numeric value, basically 2021 - year built
 
 ## Project Planning
 
