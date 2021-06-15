@@ -138,3 +138,37 @@ The overall process followed in this project, is as follows:
 
 ### 6. Deliver
 * Present findings via PowerPoint slides
+
+## To recreate
+Simply clone the project locally and create an env.py file in the same folder as the cloned code. The format should be as follows:
+
+```
+host = ‘DB_HOST_IP’
+user =  ‘USERNAME’
+password = ‘PASSWORD’
+
+def get_db_url(db, user=user, host=host, password=password):
+    return f'mysql+pymysql://{user}:{password}@{host}/{db}'
+```
+    
+In the above code, replace the `host`, `user` and `password` values with the correct Database Host IP address, Username and Password.
+
+Next, open the Jupyter notebook titled “final_report_zillow” and execute the code within. 
+
+## Takeaways
+During the analysis process, I made use of the following regression models:
+1. OLS Regression
+2. Lasso + Lars
+3. Tweedie Regressor GLM
+4. Polynomial Regression
+
+My results indicated that the Polynomial Regression model provided the highest R-squared of 44% and the lowest RMSE of 463791. This beat the baseline RMSE of 620877 and R-squared of -22%.
+
+The square footage, location (latitude and longitude) and number of bedrooms were found to be the best drivers of tax value.
+
+## Next Steps
+If I had more time, I would:
+* add more features to the models - garage, basement, pool
+* explore other scaling methods
+* collect more data related to higher-property values
+
