@@ -59,6 +59,7 @@ county_6059|uint8|Encoded representation of whether or not the property is in th
 county_6111|uint8|Encoded representation of whether or not the property is in the 6111 county code|0 = No, 1 = Yes
 property_type| int64|Type of this property, using the numbers 0-5| 0 = Single Family Residential, 1 = Condominium, 2= Cluster Home, 3 = Manufactured, Modular, Prefabricated Homes, 4 = Mobile Home, 5 = Townhouse
 age_of_home|int64|Current age, in years, of the property|Numeric value, basically 2021 - year built
+Tax Rate|float64|Tax Amount / Tax Value|Numeric value
 
 ## Project Planning
 
